@@ -18,17 +18,26 @@ export interface ForecastPeriod {
 }
 
 export interface AlertsResponse {
-  features: AlertFeature[];
+  features?: AlertFeature[];
 }
 
 export interface PointsResponse {
-  properties: {
+  properties?: {
     forecast?: string;
   };
 }
 
 export interface ForecastResponse {
-  properties: {
-    periods: ForecastPeriod[];
+  properties?: {
+    periods?: ForecastPeriod[];
   };
 }
+
+export type NWSError =
+  | { kind: "http"; status: number }
+  | { kind: "timeout" }
+  | { kind: "network" };
+
+export type NWSResult<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: NWSError };

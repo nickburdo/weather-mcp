@@ -1,7 +1,10 @@
 import { z } from "zod";
 
 export const alertsInputSchema = z.object({
-  state: z.string().length(2).describe("Two-letter state code (e.g. CA, NY)"),
+  state: z
+    .string()
+    .regex(/^[A-Za-z]{2}$/)
+    .describe("Two-letter state code (e.g. CA, NY)"),
 });
 
 export const forecastInputSchema = z.object({

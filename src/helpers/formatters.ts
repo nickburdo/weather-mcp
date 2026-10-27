@@ -17,7 +17,7 @@ export function formatAlert(feature: AlertFeature): string {
 export function formatForecastPeriod(period: ForecastPeriod): string {
   return [
     `${period.name || "Unknown"}:`,
-    `Temperature: ${period.temperature || "Unknown"}°${period.temperatureUnit || "F"}`,
+    `Temperature: ${period.temperature ?? "Unknown"}°${period.temperatureUnit || "F"}`,
     `Wind: ${period.windSpeed || "Unknown"} ${period.windDirection || ""}`,
     `${period.shortForecast || "No forecast available"}`,
     "---",

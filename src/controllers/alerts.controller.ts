@@ -1,8 +1,8 @@
 import type { CallToolResult } from "@modelcontextprotocol/server";
 import { NWS_API_BASE } from "../config.js";
 import { formatAlert } from "../helpers/formatters.js";
-import { makeNWSRequest } from "../helpers/nws-client.js";
-import { textResult } from "../helpers/tool-result.js";
+import { describeNWSError, makeNWSRequest } from "../helpers/nws-client.js";
+import { errorResult, textResult } from "../helpers/tool-result.js";
 import type { AlertsInput } from "../schemas.js";
 import type { AlertsResponse } from "../types.js";
 
@@ -10,14 +10,16 @@ export async function getAlerts({
   state,
 }: AlertsInput): Promise<CallToolResult> {
   const stateCode = state.toUpperCase();
-  const alertsUrl = `${NWS_API_BASE}/alerts?area=${stateCode}`;
-  const alertsData = await makeNWSRequest<AlertsResponse>(alertsUrl);
+  const alertsUrl = `${NWS_API_BASE}/alerts/active?area=${stateCode}`;
+  const alertsResult = await makeNWSRequest<AlertsResponse>(alertsUrl);
 
-  if (!alertsData) {
-    return textResult("Failed to retrieve alerts data");
+  if (!alertsResult.ok) {
+    return errorResult(
+      `Failed to retrieve alerts data: ${describeNWSError(alertsResult.error)}`,
+    );
   }
 
-  const features = alertsData.features || [];
+  const features = alertsResult.data.features || [];
   if (!features.length) {
     return textResult(`No active alerts for ${stateCode}`);
   }

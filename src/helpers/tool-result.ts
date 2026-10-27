@@ -11,3 +11,11 @@ export function textResult(text: string): CallToolResult {
     ],
   };
 }
+
+// Wrap plain text into a tool call result flagged as an error
+export function errorResult(text: string): CallToolResult {
+  return {
+    ...textResult(text),
+    isError: true,
+  };
+}
