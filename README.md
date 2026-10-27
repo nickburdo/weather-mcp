@@ -42,23 +42,56 @@ The TypeScript sources from `src/` are compiled into `build/`, and `build/index.
 
 ## Usage with Claude Desktop
 
-Add the server to your Claude Desktop configuration file:
+1. Build the server (see [Build](#build)).
+2. Open the Claude Desktop configuration file (create it if it does not exist):
+   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+3. Add the server under the `mcpServers` key. If the file already lists other servers, add `weather` next to them instead of replacing the whole object.
 
-- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   macOS / Linux:
 
-```json
-{
-  "mcpServers": {
-    "weather": {
-      "command": "node",
-      "args": ["/ABSOLUTE/PATH/TO/weather-mcp/build/index.js"]
-    }
-  }
-}
-```
+   ```json
+   {
+     "mcpServers": {
+       "weather": {
+         "command": "node",
+         "args": ["/ABSOLUTE/PATH/TO/weather-mcp/build/index.js"]
+       }
+     }
+   }
+   ```
 
-Replace the path with the absolute path to your local build, then restart Claude Desktop.
+   Windows (backslashes must be escaped in JSON):
+
+   ```json
+   {
+     "mcpServers": {
+       "weather": {
+         "command": "node",
+         "args": ["C:\\ABSOLUTE\\PATH\\TO\\weather-mcp\\build\\index.js"]
+       }
+     }
+   }
+   ```
+
+   The path must be absolute.
+4. Fully restart Claude Desktop. Closing the window is not enough, because the app keeps running in the system tray / menu bar. Quit it from there and start it again.
+5. Check that the `weather` server and its `get_alerts` and `get_forecast` tools appear in the list of connected tools.
+
+### Example prompts
+
+The NWS API covers U.S. locations only.
+
+- "What are the active weather alerts in Texas?"
+- "What's the weather forecast for Sacramento?"
+
+Claude asks for permission before calling a tool. Approve the request to let it fetch the data.
+
+### Troubleshooting
+
+- Claude Desktop writes MCP server logs to `~/Library/Logs/Claude/` on macOS and `%APPDATA%\Claude\logs\` on Windows (`mcp*.log` files).
+- After changing the code, run `npm run build` again and restart Claude Desktop.
+- The server logs to stderr only. Writing to stdout (for example with `console.log`) corrupts the stdio protocol stream.
 
 ## Project structure
 
