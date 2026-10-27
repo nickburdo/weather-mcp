@@ -43,9 +43,7 @@ The TypeScript sources from `src/` are compiled into `build/`, and `build/index.
 ## Usage with Claude Desktop
 
 1. Build the server (see [Build](#build)).
-2. Open the Claude Desktop configuration file (create it if it does not exist):
-   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+2. Open the Claude Desktop configuration file: in Claude Desktop, go to **Settings → Developer → Edit Config**. The app opens (and creates, if needed) the exact `claude_desktop_config.json` file it reads.
 3. Add the server under the `mcpServers` key. If the file already lists other servers, add `weather` next to them instead of replacing the whole object.
 
    macOS / Linux:
@@ -90,6 +88,7 @@ Claude asks for permission before calling a tool. Approve the request to let it 
 ### Troubleshooting
 
 - Claude Desktop writes MCP server logs to `~/Library/Logs/Claude/` on macOS and `%APPDATA%\Claude\logs\` on Windows (`mcp*.log` files).
+- The server requires Node.js 20 or newer. If several Node.js versions are installed (for example, via nvm), Claude Desktop may pick an older one from `PATH`. The log line `Using MCP server command: ...` shows which `node` was used. In that case, set `"command"` to the full path of a suitable `node.exe`, e.g. `"C:\\Users\\<user>\\AppData\\Roaming\\nvm\\v24.16.0\\node.exe"`.
 - After changing the code, run `npm run build` again and restart Claude Desktop.
 - The server logs to stderr only. Writing to stdout (for example with `console.log`) corrupts the stdio protocol stream.
 
