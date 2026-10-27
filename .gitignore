@@ -1,2 +1,15 @@
 .idea/
 node_modules
+build/
+
+# Logs
+npm-debug.log*
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
