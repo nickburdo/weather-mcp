@@ -25,7 +25,7 @@ Weather data comes from the public NWS API at `https://api.weather.gov`:
 ## Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/nickburdo/weather-mcp.git
 cd weather-mcp
 npm install
 ```
